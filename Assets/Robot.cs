@@ -117,7 +117,7 @@ public class Robot : MonoBehaviour
           sizes[(int)BODY.CHEST].y, 
           sizes[(int)BODY.CHEST].z);
 
-          matrixes.Add(THips* TAbs* TChest *SChest);
+          matrixes.Add(THips* TAbs* RChest *TChest *SChest);
 
 
           Matrix4x4 TNeck = Transformations.TranslateM(
@@ -130,7 +130,7 @@ public class Robot : MonoBehaviour
           sizes[(int)BODY.NECK].y, 
           sizes[(int)BODY.NECK].z);
 
-          matrixes.Add(THips* TAbs*TChest*TNeck*SNeck);
+          matrixes.Add(THips* TAbs*RChest*TChest*TNeck*SNeck);
 
           Matrix4x4 THead = Transformations.TranslateM(
           places[(int)BODY.HEAD].x, 
@@ -142,7 +142,7 @@ public class Robot : MonoBehaviour
           sizes[(int)BODY.HEAD].y, 
           sizes[(int)BODY.HEAD].z);
 
-          matrixes.Add(THips* TAbs*TChest*TNeck*THead*SHead);
+          matrixes.Add(THips* TAbs*RChest*TChest*TNeck*THead*SHead);
 
           for(int i= 0; i<matrixes.Count; i++){
               bodyParts[i].GetComponent<MeshFilter>().mesh.vertices = ApplyTransform(matrixes[i], originalCoordinates[i]); 
