@@ -104,12 +104,44 @@ public class Robot : MonoBehaviour
         //////////////////////////ARM////////////////////////
 
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
+        originalCoordinates.Add(bodyParts[(int)BODY.SHOULDERR].GetComponent<MeshFilter>().mesh.vertices);
+        sizes.Add(new Vector3(0.4f, 0.4f, 0.4f));
+        places.Add(new Vector3(
+        sizes[(int)BODY.CHEST].x/2 + sizes[(int)BODY.SHOULDERR].x/2,
+        // Preguntar
+        sizes[(int)BODY.HIP].y/2 + sizes[(int)BODY.ABS].y + sizes[(int)BODY.CHEST].y/2,
+
+        0));
+
+        bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
         originalCoordinates.Add(bodyParts[(int)BODY.ELBOWR].GetComponent<MeshFilter>().mesh.vertices);
-        sizes.Add(new Vector3(0.5f, 0.5f, 0.5f));
+        sizes.Add(new Vector3(0.3f, 0.3f, 0.3f));
         places.Add(new Vector3(
         0,
-        sizes[(int)BODY.HIP].y/2 + sizes[(int)BODY.ABS].y/2 + sizes[(int)BODY.CHEST].y/2+sizes[(int)BODY.ELBOWR].y/2,
-        5));
+      
+        (-1)*sizes[(int)BODY.SHOULDERR].y/2-sizes[(int)BODY.ELBOWR].y/2,
+
+        0));
+
+        bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
+        originalCoordinates.Add(bodyParts[(int)BODY.FOREARMR].GetComponent<MeshFilter>().mesh.vertices);
+        sizes.Add(new Vector3(0.4f, 0.5f, 0.4f));
+        places.Add(new Vector3(
+        0,
+      
+        (-1)*sizes[(int)BODY.ELBOWR].y/2-sizes[(int)BODY.FOREARMR].y/2,
+
+        0));
+
+        bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
+        originalCoordinates.Add(bodyParts[(int)BODY.HANDR].GetComponent<MeshFilter>().mesh.vertices);
+        sizes.Add(new Vector3(0.25f, 0.25f, 0.25f));
+        places.Add(new Vector3(
+        0,
+      
+        (-1)*sizes[(int)BODY.FOREARMR].y/2-sizes[(int)BODY.HANDR].y/2,
+
+        0));
 
         //////////////////////////ARM////////////////////////
 
@@ -191,17 +223,59 @@ public class Robot : MonoBehaviour
          //////////////////////////ARM////////////////////////
         
 
-        //   Matrix4x4 TElbowR = Transformations.TranslateM(
-        //   places[(int)BODY.ELBOWR].x, 
-        //   places[(int)BODY.ELBOWR].y, 
-        //   places[(int)BODY.ELBOWR].z);
+          Matrix4x4 TSHOULDERR = Transformations.TranslateM(
+          places[(int)BODY.SHOULDERR].x, 
+          places[(int)BODY.SHOULDERR].y, 
+          places[(int)BODY.SHOULDERR].z);
 
-        //   Matrix4x4 SElbowR = Transformations.ScaleM(
-        //   sizes[(int)BODY.ELBOWR].x, 
-        //   sizes[(int)BODY.ELBOWR].y, 
-        //   sizes[(int)BODY.ELBOWR].z);
+          Matrix4x4 SSHOULDERR = Transformations.ScaleM(
+          sizes[(int)BODY.SHOULDERR].x, 
+          sizes[(int)BODY.SHOULDERR].y, 
+          sizes[(int)BODY.SHOULDERR].z);
 
-        //   matrixes.Add(TElbowR*SElbowR);
+          Matrix4x4 RSHOULDERR = Transformations.RotateM(rotY, Transformations.AXIS.AX_X);
+
+          matrixes.Add(RSHOULDERR* TSHOULDERR*SSHOULDERR);
+
+
+          Matrix4x4 TELBOWR = Transformations.TranslateM(
+          places[(int)BODY.ELBOWR].x, 
+          places[(int)BODY.ELBOWR].y, 
+          places[(int)BODY.ELBOWR].z);
+
+          Matrix4x4 SELBOWR = Transformations.ScaleM(
+          sizes[(int)BODY.ELBOWR].x, 
+          sizes[(int)BODY.ELBOWR].y, 
+          sizes[(int)BODY.ELBOWR].z);
+
+          matrixes.Add(RSHOULDERR*TSHOULDERR*TELBOWR*SELBOWR);
+
+          Matrix4x4 TFOREARMR = Transformations.TranslateM(
+          places[(int)BODY.FOREARMR].x, 
+          places[(int)BODY.FOREARMR].y, 
+          places[(int)BODY.FOREARMR].z);
+
+          Matrix4x4 SFOREARMR = Transformations.ScaleM(
+          sizes[(int)BODY.FOREARMR].x, 
+          sizes[(int)BODY.FOREARMR].y, 
+          sizes[(int)BODY.FOREARMR].z);
+
+          matrixes.Add(RSHOULDERR*TSHOULDERR*TELBOWR*TFOREARMR*SFOREARMR);
+
+          Matrix4x4 THANDR = Transformations.TranslateM(
+          places[(int)BODY.HANDR].x, 
+          places[(int)BODY.HANDR].y, 
+          places[(int)BODY.HANDR].z);
+
+          Matrix4x4 SHANDR = Transformations.ScaleM(
+          sizes[(int)BODY.HANDR].x, 
+          sizes[(int)BODY.HANDR].y, 
+          sizes[(int)BODY.HANDR].z);
+
+          matrixes.Add(RSHOULDERR*TSHOULDERR*TELBOWR*TFOREARMR*THANDR*SHANDR);
+          
+          
+
 
 
           //////////////////////////ARM////////////////////////
