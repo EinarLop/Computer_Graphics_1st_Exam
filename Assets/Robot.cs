@@ -40,7 +40,7 @@ public class Robot : MonoBehaviour
 
         rotY = 0;
         dirY = 1;
-        deltaY =0.2f;
+        deltaY =0.1f;
 
 
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
@@ -77,7 +77,7 @@ public class Robot : MonoBehaviour
     void Update()
     {
           rotY += dirY*deltaY;
-          if(rotY < -35 || rotY > 35) dirY = -dirY;
+          if(rotY < -5 || rotY > 5) dirY = -dirY;
 
           List<Matrix4x4> matrixes = new List<Matrix4x4>();
 
