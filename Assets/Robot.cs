@@ -1,3 +1,5 @@
+// https://www.panebianco3d.com/en/20080318-isometric-3d-games-character-animation-test
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +10,10 @@ public class Robot : MonoBehaviour
     List<Vector3[]> originalCoordinates;
     List<Vector3> places; 
     List<Vector3> sizes;
+    
+
+ 
+    
 
     float rotY;
     float dirY;
@@ -31,6 +37,8 @@ public class Robot : MonoBehaviour
     }
 
 
+
+
     void Start()
     {
         bodyParts = new List<GameObject>();
@@ -42,33 +50,49 @@ public class Robot : MonoBehaviour
         dirY = 1;
         deltaY =0.1f;
 
+      
+        
 
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
         originalCoordinates.Add(bodyParts[(int)BODY.HIP].GetComponent<MeshFilter>().mesh.vertices);
         places.Add(new Vector3(0, 0, 0));
-        sizes.Add(new Vector3(1, 0.2f, 0.6f));
+        sizes.Add(new Vector3(1, 0.4f, 1));
 
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
         originalCoordinates.Add(bodyParts[(int)BODY.ABS].GetComponent<MeshFilter>().mesh.vertices);
-        places.Add(new Vector3(0, 0.1f + 0.25f, 0));
         sizes.Add(new Vector3(0.8f,0.5f,0.6f));
+        places.Add(new Vector3(
+        0,
+        //   prior/2             +      current/2
+        sizes[(int)BODY.HIP].y/2 + sizes[(int)BODY.ABS].y/2, 
+        0));
 
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
         originalCoordinates.Add(bodyParts[(int)BODY.CHEST].GetComponent<MeshFilter>().mesh.vertices);
-        places.Add(new Vector3(0,0.25f + 0.25f,0));
         sizes.Add(new Vector3(1,0.5f,0.8f));
+        places.Add(new Vector3(
+        0,
+        sizes[(int)BODY.ABS].y/2 + sizes[(int)BODY.CHEST].y/2,
+        0));
 
 
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
         originalCoordinates.Add(bodyParts[(int)BODY.NECK].GetComponent<MeshFilter>().mesh.vertices);
-        places.Add(new Vector3(0, 0.25f + 0.1f, 0)); // En relación al padre
+        // En relación al padre
         sizes.Add(new Vector3(0.2f, 0.2f, 0.2f));
+        places.Add(new Vector3(
+        0,
+        sizes[(int)BODY.CHEST].y/2 + sizes[(int)BODY.NECK].y/2,
+        0)); 
         
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
         originalCoordinates.Add(bodyParts[(int)BODY.HEAD].GetComponent<MeshFilter>().mesh.vertices);
-        places.Add(new Vector3(0,0.1f+0.25f,0)); // En relación al padre
+        // En relación al padre
         sizes.Add(new Vector3(0.5f, 0.5f, 0.5f));
-
+        places.Add(new Vector3(
+        0,
+        sizes[(int)BODY.NECK].y/2 + sizes[(int)BODY.HEAD].y/2,
+        0));
         
 
     }
