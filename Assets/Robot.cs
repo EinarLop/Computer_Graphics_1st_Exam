@@ -33,8 +33,14 @@ public class Robot : MonoBehaviour
     // Orden jerarquico 
     // Todo depende de la cadera
     enum BODY{
-        HIP, ABS, CHEST, NECK, HEAD
+        HIP, ABS, CHEST, NECK, HEAD, SHOULDERR, ELBOWR, FOREARMR, HANDR
     }
+
+
+    
+
+
+
 
 
 
@@ -94,6 +100,19 @@ public class Robot : MonoBehaviour
         sizes[(int)BODY.NECK].y/2 + sizes[(int)BODY.HEAD].y/2,
         0));
         
+
+        //////////////////////////ARM////////////////////////
+
+        bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
+        originalCoordinates.Add(bodyParts[(int)BODY.ELBOWR].GetComponent<MeshFilter>().mesh.vertices);
+        sizes.Add(new Vector3(0.5f, 0.5f, 0.5f));
+        places.Add(new Vector3(
+        0,
+        sizes[(int)BODY.HIP].y/2 + sizes[(int)BODY.ABS].y/2 + sizes[(int)BODY.CHEST].y/2+sizes[(int)BODY.ELBOWR].y/2,
+        5));
+
+        //////////////////////////ARM////////////////////////
+
 
     }
 
@@ -167,6 +186,25 @@ public class Robot : MonoBehaviour
           sizes[(int)BODY.HEAD].z);
 
           matrixes.Add(THips* TAbs*RChest*TChest*TNeck*THead*SHead);
+
+
+         //////////////////////////ARM////////////////////////
+        
+
+        //   Matrix4x4 TElbowR = Transformations.TranslateM(
+        //   places[(int)BODY.ELBOWR].x, 
+        //   places[(int)BODY.ELBOWR].y, 
+        //   places[(int)BODY.ELBOWR].z);
+
+        //   Matrix4x4 SElbowR = Transformations.ScaleM(
+        //   sizes[(int)BODY.ELBOWR].x, 
+        //   sizes[(int)BODY.ELBOWR].y, 
+        //   sizes[(int)BODY.ELBOWR].z);
+
+        //   matrixes.Add(TElbowR*SElbowR);
+
+
+          //////////////////////////ARM////////////////////////
 
           for(int i= 0; i<matrixes.Count; i++){
               bodyParts[i].GetComponent<MeshFilter>().mesh.vertices = ApplyTransform(matrixes[i], originalCoordinates[i]); 
