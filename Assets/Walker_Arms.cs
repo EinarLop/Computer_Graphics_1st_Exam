@@ -4,20 +4,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Robot : MonoBehaviour
+public class Walker_Arms : MonoBehaviour
 {   
-    List<GameObject> bodyParts;
-    List<Vector3[]> originalCoordinates;
-    List<Vector3> places; 
-    List<Vector3> sizes;
-    
-
- 
-    
+   public  List<GameObject> bodyParts;
+   public  List<Vector3[]> originalCoordinates;
+   public  List<Vector3> places; 
+   public  List<Vector3> sizes;
+   public  List<Matrix4x4> matrixes;
 
     float rotY;
     float dirY;
     float deltaY;
+
+    enum BODY{
+        SHOULDERR, ELBOWR, FOREARMR, HANDR,
+        SHOULDERL, ELBOWL, FOREARML, HANDL,
+    }
+    
+
+    // public Walker_Arms(List<GameObject> bodyParts, List<Vector3[]> originalCoordinates, List<Vector3> places, List<Vector3> sizes, List<Matrix4x4> matrixes){
+    //     this.bodyParts = bodyParts;
+    //     this.originalCoordinates = originalCoordinates;
+    //     this.places = places;
+    //     this.sizes = sizes;
+    //     this.matrixes = matrixes;
+    // }
 
     Vector3[] ApplyTransform(Matrix4x4 m, Vector3[] vertices){
         int num = vertices.Length;
@@ -30,25 +41,9 @@ public class Robot : MonoBehaviour
         return result;
     }
 
-    // Orden jerarquico 
-    // Todo depende de la cadera
-    enum BODY{
-        HIP, ABS, CHEST, NECK, HEAD,
-        SHOULDERR, ELBOWR, FOREARMR, HANDR,
-        SHOULDERL, ELBOWL, FOREARML, HANDL,
-    }
-
-
     
-
-
-
-
-
-
-
-    public void bodySetup(enum BODY)
-    {
+    public void bodySetup(Vector3 hipSize, Vector3 absSize, Vector3 chestSize )
+    {   
         bodyParts = new List<GameObject>();
         originalCoordinates = new List<Vector3[]>();
         places = new List<Vector3>();
@@ -66,8 +61,10 @@ public class Robot : MonoBehaviour
         originalCoordinates.Add(bodyParts[(int)BODY.SHOULDERR].GetComponent<MeshFilter>().mesh.vertices);
         sizes.Add(new Vector3(0.4f, 0.4f, 0.4f));
         places.Add(new Vector3(
-        sizes[(int)BODY.CHEST].x/2 + sizes[(int)BODY.SHOULDERR].x/2,
-        sizes[(int)BODY.HIP].y/2 + sizes[(int)BODY.ABS].y + sizes[(int)BODY.CHEST].y/2,
+        // sizes[(int)BODY.CHEST].x/2 + sizes[(int)BODY.SHOULDERR].x/2,
+        chestSize.x/2 + sizes[(int)BODY.SHOULDERR].x/2,
+        //sizes[(int)BODY.HIP].y/2 + sizes[(int)BODY.ABS].y + sizes[(int)BODY.CHEST].y/2,
+        hipSize.y/2 + absSize.y + chestSize.y/2,
         0));
 
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
@@ -104,9 +101,9 @@ public class Robot : MonoBehaviour
         originalCoordinates.Add(bodyParts[(int)BODY.SHOULDERL].GetComponent<MeshFilter>().mesh.vertices);
         sizes.Add(new Vector3(0.4f, 0.4f, 0.4f));
         places.Add(new Vector3(
-        (-1)*sizes[(int)BODY.CHEST].x/2 - sizes[(int)BODY.SHOULDERL].x/2,
-        sizes[(int)BODY.HIP].y/2 + sizes[(int)BODY.ABS].y + sizes[(int)BODY.CHEST].y/2,
-        0));
+        (-1)*chestSize.x/2 - sizes[(int)BODY.SHOULDERL].x/2,
+       hipSize.y/2 + absSize.y + chestSize.y/2,
+                0));
 
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
         originalCoordinates.Add(bodyParts[(int)BODY.ELBOWL].GetComponent<MeshFilter>().mesh.vertices);
@@ -123,104 +120,31 @@ public class Robot : MonoBehaviour
         sizes.Add(new Vector3(0.4f, 0.5f, 0.4f));
         places.Add(new Vector3(
         0,
-      
         (-1)*sizes[(int)BODY.ELBOWL].y/2-sizes[(int)BODY.FOREARML].y/2,
-
         0));
 
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
         bodyParts[(int)BODY.HANDL].GetComponent<Renderer>().material.color= new Color(0,0,255);
-        
         originalCoordinates.Add(bodyParts[(int)BODY.HANDL].GetComponent<MeshFilter>().mesh.vertices);
         sizes.Add(new Vector3(0.25f, 0.25f, 0.25f));
         places.Add(new Vector3(
         0,
-      
         (-1)*sizes[(int)BODY.FOREARML].y/2-sizes[(int)BODY.HANDL].y/2,
-
         0));
-
-        //////////////////////////ARM LEFT////////////////////////
-
     }
 
 
-    void Update()
+    public void bodyMovement()
     {
-          rotY += dirY*deltaY;
-          if(rotY < -3 || rotY > 3) dirY = -dirY;
 
           List<Matrix4x4> matrixes = new List<Matrix4x4>();
-
-          Matrix4x4 THips = Transformations.TranslateM(
-          places[(int)BODY.HIP].x, 
-          places[(int)BODY.HIP].y, 
-          places[(int)BODY.HIP].z);
-
-          Matrix4x4 SHips = Transformations.ScaleM(
-          sizes[(int)BODY.HIP].x, 
-          sizes[(int)BODY.HIP].y, 
-          sizes[(int)BODY.HIP].z);
-
-          matrixes.Add(THips*SHips);
-
-
-          Matrix4x4 TAbs = Transformations.TranslateM(
-          places[(int)BODY.ABS].x, 
-          places[(int)BODY.ABS].y, 
-          places[(int)BODY.ABS].z);
-
-          Matrix4x4 SAbs = Transformations.ScaleM(
-          sizes[(int)BODY.ABS].x, 
-          sizes[(int)BODY.ABS].y, 
-          sizes[(int)BODY.ABS].z);
-
-          matrixes.Add(THips* TAbs* SAbs);
-
-          Matrix4x4 RChest = Transformations.RotateM(rotY, Transformations.AXIS.AX_Y);
-          Matrix4x4 TChest = Transformations.TranslateM(
-          places[(int)BODY.CHEST].x, 
-          places[(int)BODY.CHEST].y, 
-          places[(int)BODY.CHEST].z);
-
-          Matrix4x4 SChest = Transformations.ScaleM(
-          sizes[(int)BODY.CHEST].x, 
-          sizes[(int)BODY.CHEST].y, 
-          sizes[(int)BODY.CHEST].z);
-
-          matrixes.Add(THips* TAbs* RChest *TChest *SChest);
-
-
-          Matrix4x4 TNeck = Transformations.TranslateM(
-          places[(int)BODY.NECK].x, 
-          places[(int)BODY.NECK].y, 
-          places[(int)BODY.NECK].z);
-
-          Matrix4x4 SNeck = Transformations.ScaleM(
-          sizes[(int)BODY.NECK].x, 
-          sizes[(int)BODY.NECK].y, 
-          sizes[(int)BODY.NECK].z);
-
-          matrixes.Add(THips* TAbs*RChest*TChest*TNeck*SNeck);
-
-          Matrix4x4 THead = Transformations.TranslateM(
-          places[(int)BODY.HEAD].x, 
-          places[(int)BODY.HEAD].y, 
-          places[(int)BODY.HEAD].z);
-
-          Matrix4x4 SHead = Transformations.ScaleM(
-          sizes[(int)BODY.HEAD].x, 
-          sizes[(int)BODY.HEAD].y, 
-          sizes[(int)BODY.HEAD].z);
-
-          matrixes.Add(THips* TAbs*RChest*TChest*TNeck*THead*SHead);
+          rotY += dirY*deltaY;
+          if(rotY < -3 || rotY > 3) dirY = -dirY;
 
 
           //////////////////////////ARM RIGHT////////////////////////
 
         
-        
-
           Matrix4x4 TSHOULDERR = Transformations.TranslateM(
           places[(int)BODY.SHOULDERR].x, 
           places[(int)BODY.SHOULDERR].y, 
@@ -276,7 +200,7 @@ public class Robot : MonoBehaviour
           matrixes.Add(RSHOULDERR*TSHOULDERR*TELBOWR*R2FOREARMR*TFOREARMR*THANDR*SHANDR);
           
 
-        //////////////////////////ARM RIGHT////////////////////////
+      
 
         //////////////////////////ARM LEFT////////////////////////
 
@@ -334,8 +258,6 @@ public class Robot : MonoBehaviour
 
           matrixes.Add(RSHOULDERL*TSHOULDERL*TELBOWL*R2FOREARML*TFOREARML*THANDL*SHANDL);
 
-
-        //////////////////////////ARM LEFT////////////////////////
 
           for(int i= 0; i<matrixes.Count; i++){
               bodyParts[i].GetComponent<MeshFilter>().mesh.vertices = ApplyTransform(matrixes[i], originalCoordinates[i]); 

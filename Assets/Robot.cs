@@ -11,10 +11,6 @@ public class Robot : MonoBehaviour
     List<Vector3> places; 
     List<Vector3> sizes;
     
-
- 
-    
-
     float rotY;
     float dirY;
     float deltaY;
