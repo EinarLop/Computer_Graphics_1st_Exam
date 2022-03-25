@@ -47,7 +47,7 @@ public class Robot : MonoBehaviour
 
 
 
-    void Start()
+    public void bodySetup(enum BODY)
     {
         bodyParts = new List<GameObject>();
         originalCoordinates = new List<Vector3[]>();
@@ -58,58 +58,6 @@ public class Robot : MonoBehaviour
         dirY = 1;
         deltaY =0.03f;
 
-      
-        
-
-        bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
-        bodyParts[(int)BODY.HIP].GetComponent<Renderer>().material.color= new Color(0.36f,0.36f,0.36f);
-        originalCoordinates.Add(bodyParts[(int)BODY.HIP].GetComponent<MeshFilter>().mesh.vertices);
-        places.Add(new Vector3(0, 0, 0));
-        sizes.Add(new Vector3(1, 0.4f, 1));
-
-
-
-        bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
-        originalCoordinates.Add(bodyParts[(int)BODY.ABS].GetComponent<MeshFilter>().mesh.vertices);
-        sizes.Add(new Vector3(0.8f,0.5f,0.6f));
-        places.Add(new Vector3(
-        0,
-        //   prior/2             +      current/2
-        sizes[(int)BODY.HIP].y/2 + sizes[(int)BODY.ABS].y/2, 
-        0));
-
-        bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
-        bodyParts[(int)BODY.CHEST].GetComponent<Renderer>().material.color= new Color(1,0,0);
-        originalCoordinates.Add(bodyParts[(int)BODY.CHEST].GetComponent<MeshFilter>().mesh.vertices);
-        sizes.Add(new Vector3(1,0.5f,0.8f));
-        places.Add(new Vector3(
-        0,
-        sizes[(int)BODY.ABS].y/2 + sizes[(int)BODY.CHEST].y/2,
-        0));
-
-
-        
-        bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
-        originalCoordinates.Add(bodyParts[(int)BODY.NECK].GetComponent<MeshFilter>().mesh.vertices);
-        // En relación al padre
-        sizes.Add(new Vector3(0.2f, 0.2f, 0.2f));
-        places.Add(new Vector3(
-        0,
-        sizes[(int)BODY.CHEST].y/2 + sizes[(int)BODY.NECK].y/2,
-        0)); 
-        
-        bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
-        bodyParts[(int)BODY.HEAD].GetComponent<Renderer>().material.color= new Color(0,0,1);
-        
-        originalCoordinates.Add(bodyParts[(int)BODY.HEAD].GetComponent<MeshFilter>().mesh.vertices);
-        // En relación al padre
-        sizes.Add(new Vector3(0.5f, 0.5f, 0.5f));
-        places.Add(new Vector3(
-        0,
-        sizes[(int)BODY.NECK].y/2 + sizes[(int)BODY.HEAD].y/2,
-        0));
-        
-
         //////////////////////////ARM RIGHT////////////////////////
 
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
@@ -119,9 +67,7 @@ public class Robot : MonoBehaviour
         sizes.Add(new Vector3(0.4f, 0.4f, 0.4f));
         places.Add(new Vector3(
         sizes[(int)BODY.CHEST].x/2 + sizes[(int)BODY.SHOULDERR].x/2,
-        // Preguntar
         sizes[(int)BODY.HIP].y/2 + sizes[(int)BODY.ABS].y + sizes[(int)BODY.CHEST].y/2,
-
         0));
 
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
@@ -129,9 +75,7 @@ public class Robot : MonoBehaviour
         sizes.Add(new Vector3(0.3f, 0.3f, 0.3f));
         places.Add(new Vector3(
         0,
-      
         (-1)*sizes[(int)BODY.SHOULDERR].y/2-sizes[(int)BODY.ELBOWR].y/2,
-
         0));
 
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
@@ -140,9 +84,7 @@ public class Robot : MonoBehaviour
         sizes.Add(new Vector3(0.4f, 0.5f, 0.4f));
         places.Add(new Vector3(
         0,
-      
         (-1)*sizes[(int)BODY.ELBOWR].y/2-sizes[(int)BODY.FOREARMR].y/2,
-
         0));
 
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
@@ -151,12 +93,9 @@ public class Robot : MonoBehaviour
         sizes.Add(new Vector3(0.25f, 0.25f, 0.25f));
         places.Add(new Vector3(
         0,
-      
         (-1)*sizes[(int)BODY.FOREARMR].y/2-sizes[(int)BODY.HANDR].y/2,
-
         0));
 
-        //////////////////////////ARM RIGHT////////////////////////
 
         //////////////////////////ARM LEFT////////////////////////
         
@@ -166,9 +105,7 @@ public class Robot : MonoBehaviour
         sizes.Add(new Vector3(0.4f, 0.4f, 0.4f));
         places.Add(new Vector3(
         (-1)*sizes[(int)BODY.CHEST].x/2 - sizes[(int)BODY.SHOULDERL].x/2,
-        // Preguntar
         sizes[(int)BODY.HIP].y/2 + sizes[(int)BODY.ABS].y + sizes[(int)BODY.CHEST].y/2,
-
         0));
 
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
@@ -176,9 +113,7 @@ public class Robot : MonoBehaviour
         sizes.Add(new Vector3(0.3f, 0.3f, 0.3f));
         places.Add(new Vector3(
         0,
-      
         (-1)*sizes[(int)BODY.SHOULDERL].y/2-sizes[(int)BODY.ELBOWL].y/2,
-
         0));
 
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
