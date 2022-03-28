@@ -62,9 +62,9 @@ public class Walker_Arms : MonoBehaviour
         sizes.Add(new Vector3(0.4f, 0.4f, 0.4f));
         places.Add(new Vector3(
         // sizes[(int)BODY.CHEST].x/2 + sizes[(int)BODY.SHOULDERR].x/2,
-        chestSize.x/2 + sizes[(int)BODY.SHOULDERR].x/2,
+        chestSize.x/2 + sizes[(int)BODY.SHOULDERR].x*0.75f,
         //sizes[(int)BODY.HIP].y/2 + sizes[(int)BODY.ABS].y + sizes[(int)BODY.CHEST].y/2,
-        hipSize.y/2 + absSize.y + chestSize.y/2,
+        0,
         0));
 
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
@@ -101,8 +101,8 @@ public class Walker_Arms : MonoBehaviour
         originalCoordinates.Add(bodyParts[(int)BODY.SHOULDERL].GetComponent<MeshFilter>().mesh.vertices);
         sizes.Add(new Vector3(0.4f, 0.4f, 0.4f));
         places.Add(new Vector3(
-        (-1)*chestSize.x/2 - sizes[(int)BODY.SHOULDERL].x/2,
-       hipSize.y/2 + absSize.y + chestSize.y/2,
+        (-1)*chestSize.x/2 - sizes[(int)BODY.SHOULDERL].x*0.75f,
+            0,
                 0));
 
         bodyParts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
@@ -134,7 +134,7 @@ public class Walker_Arms : MonoBehaviour
     }
 
 
-    public void bodyMovement()
+    public void bodyMovement(Matrix4x4 chestHierarchy)
     {
 
           List<Matrix4x4> matrixes = new List<Matrix4x4>();
@@ -157,7 +157,7 @@ public class Walker_Arms : MonoBehaviour
 
           Matrix4x4 RSHOULDERR = Transformations.RotateM(rotY, Transformations.AXIS.AX_X);
 
-          matrixes.Add(RSHOULDERR* TSHOULDERR*SSHOULDERR);
+          matrixes.Add(chestHierarchy*RSHOULDERR* TSHOULDERR*SSHOULDERR);
 
 
           Matrix4x4 TELBOWR = Transformations.TranslateM(
@@ -170,7 +170,7 @@ public class Walker_Arms : MonoBehaviour
           sizes[(int)BODY.ELBOWR].y, 
           sizes[(int)BODY.ELBOWR].z);
 
-          matrixes.Add(RSHOULDERR*TSHOULDERR*TELBOWR*SELBOWR);
+          matrixes.Add(chestHierarchy*RSHOULDERR*TSHOULDERR*TELBOWR*SELBOWR);
 
           Matrix4x4 TFOREARMR = Transformations.TranslateM(
           places[(int)BODY.FOREARMR].x, 
@@ -185,7 +185,7 @@ public class Walker_Arms : MonoBehaviour
           Matrix4x4 R2FOREARMR = Transformations.RotateM(15, Transformations.AXIS.AX_X);
 
 
-          matrixes.Add(RSHOULDERR*TSHOULDERR*TELBOWR*R2FOREARMR*TFOREARMR*SFOREARMR);
+          matrixes.Add(chestHierarchy*RSHOULDERR*TSHOULDERR*TELBOWR*R2FOREARMR*TFOREARMR*SFOREARMR);
 
           Matrix4x4 THANDR = Transformations.TranslateM(
           places[(int)BODY.HANDR].x, 
@@ -197,7 +197,7 @@ public class Walker_Arms : MonoBehaviour
           sizes[(int)BODY.HANDR].y, 
           sizes[(int)BODY.HANDR].z);
 
-          matrixes.Add(RSHOULDERR*TSHOULDERR*TELBOWR*R2FOREARMR*TFOREARMR*THANDR*SHANDR);
+          matrixes.Add(chestHierarchy*RSHOULDERR*TSHOULDERR*TELBOWR*R2FOREARMR*TFOREARMR*THANDR*SHANDR);
           
 
       
@@ -217,7 +217,7 @@ public class Walker_Arms : MonoBehaviour
 
           Matrix4x4 RSHOULDERL = Transformations.RotateM((-1)*rotY, Transformations.AXIS.AX_X);
 
-          matrixes.Add(RSHOULDERL* TSHOULDERL*SSHOULDERL);
+          matrixes.Add(chestHierarchy*RSHOULDERL* TSHOULDERL*SSHOULDERL);
 
 
           Matrix4x4 TELBOWL = Transformations.TranslateM(
@@ -230,7 +230,7 @@ public class Walker_Arms : MonoBehaviour
           sizes[(int)BODY.ELBOWL].y, 
           sizes[(int)BODY.ELBOWL].z);
 
-          matrixes.Add(RSHOULDERL*TSHOULDERL*TELBOWL*SELBOWL);
+          matrixes.Add(chestHierarchy*RSHOULDERL*TSHOULDERL*TELBOWL*SELBOWL);
 
           Matrix4x4 TFOREARML = Transformations.TranslateM(
           places[(int)BODY.FOREARML].x, 
@@ -244,7 +244,7 @@ public class Walker_Arms : MonoBehaviour
 
           Matrix4x4 R2FOREARML = Transformations.RotateM(15, Transformations.AXIS.AX_X);
 
-          matrixes.Add(RSHOULDERL*TSHOULDERL*TELBOWL*R2FOREARML*TFOREARML*SFOREARML);
+          matrixes.Add(chestHierarchy*RSHOULDERL*TSHOULDERL*TELBOWL*R2FOREARML*TFOREARML*SFOREARML);
 
           Matrix4x4 THANDL = Transformations.TranslateM(
           places[(int)BODY.HANDL].x, 
@@ -256,7 +256,7 @@ public class Walker_Arms : MonoBehaviour
           sizes[(int)BODY.HANDL].y, 
           sizes[(int)BODY.HANDL].z);
 
-          matrixes.Add(RSHOULDERL*TSHOULDERL*TELBOWL*R2FOREARML*TFOREARML*THANDL*SHANDL);
+          matrixes.Add(chestHierarchy*RSHOULDERL*TSHOULDERL*TELBOWL*R2FOREARML*TFOREARML*THANDL*SHANDL);
 
 
           for(int i= 0; i<matrixes.Count; i++){

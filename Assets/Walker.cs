@@ -21,6 +21,6 @@ public class Walker : MonoBehaviour
     void Update()
     {
         walker_Torso.bodyMovement(); 
-        walker_Arms.bodyMovement();
+        walker_Arms.bodyMovement(walker_Torso.chestHierarchy);
     }
 }

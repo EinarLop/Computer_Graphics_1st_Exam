@@ -17,6 +17,7 @@ public class Walker_Torso : MonoBehaviour
    public List<Vector3> places; 
    public List<Vector3> sizes;
    public List<Matrix4x4> matrixes;
+   public Matrix4x4 chestHierarchy;
 
   
 
@@ -154,6 +155,8 @@ public class Walker_Torso : MonoBehaviour
           sizes[(int)BODY.CHEST].z);
 
           matrixes.Add(THips* TAbs* RChest *TChest *SChest);
+
+          chestHierarchy = THips* TAbs* RChest *TChest;
 
 
           Matrix4x4 TNeck = Transformations.TranslateM(
